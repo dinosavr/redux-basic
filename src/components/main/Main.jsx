@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getRepos} from "../actions/repos";
 import Repo from "./repo/Repo";
 import {setCurrentPage} from "../../reducers/reposReducer";
+import {setCash, getCash} from "../../reducers/cashReducer";
 import {createPages} from "../../utils/pagesCreator";
 import {Redirect} from "react-router-dom";
 
@@ -15,6 +16,7 @@ const Main = () => {
     const totalCount = useSelector(state => state.repos.totalCount)
     const perPage = useSelector(state => state.repos.perPage)
     const isFetchError = useSelector(state => state.repos.isFetchError)
+    const cash = useSelector(state => state.cash.cash)
     const [searchValue, setSearchValue] = useState("")
     const pagesCount = Math.ceil(totalCount/perPage)
     const pages = []
@@ -28,11 +30,19 @@ const Main = () => {
         dispatch(setCurrentPage(1))
         dispatch(getRepos(searchValue, currentPage, perPage))
     }
+    function addCashHandler() {
+        dispatch(setCash(10))
+    }
+    function getCashHandler() {
+        dispatch(getCash(7))
+    }
 
 
 
     return (
-        <div>
+        <div>{ cash }
+        <button onClick={()=> addCashHandler()} className="search-btn">Add</button>
+        <button onClick={()=> getCashHandler()} className="search-btn">Get</button>
             { isFetchError &&
             <div className="alert alert-danger" role="alert">
                 Произошла ошибка! ПОжалуйста обновите страницу!
